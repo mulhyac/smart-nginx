@@ -1,4 +1,4 @@
-接口根地址：http://nginx.eziep.net
+接口根地址：http://nginx.zejor.net
 以后所有接口均在该地址下
 
 

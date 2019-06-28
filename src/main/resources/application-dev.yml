@@ -9,7 +9,6 @@ spring:
   application:
     name: nginx
 
-
 nutz:
   dao:
     sqlmanager:
@@ -18,5 +17,3 @@ nutz:
 
 page-store: 
   location: /data/temp/nginx/store
-
-
