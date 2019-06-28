@@ -1,0 +1,311 @@
+接口根地址：http://nginx.eziep.net
+以后所有接口均在该地址下
+
+
+1、获取指定标识的nginx下所有server节点
+    地址：/admin/nginx/{nginxId}
+    方法：get
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1
+
+
+2、向指定nginx服务添加server节点
+    地址：/admin/nginx/{nginxId}
+    方法:post
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    body参数说明：
+        name    必填  监听地址名称，对应server_name
+        port    必填  监听端口，对应listen
+    body参数示例：
+        {
+            "name":"zejor.com",
+            "port":"80"
+        }
+
+
+3、删除指定标识的nginx下指定server节点
+    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    方法：delete
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1/aaaaaaar.com/80
+
+
+4、获取指定server下location
+    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    方法：get
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1/aaaaaaar.com/80
+
+
+5、添加指定server下location
+    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    方法：post
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1/aaaaaaar.com/80
+    body参数说明：
+            path    必填        定代理路径规则
+            root    选填        静态路径
+    body参数示例：
+        {
+            "path":"/test1",
+            "root":"html"
+        }
+    例2：
+        {
+            "path":"/aaaaaaaaaaaaaaaaaaaa",
+            "proxy_pass":"http://cccccccccc"
+        }
+    注意：proxy_pass需要选择类型再输入，类型暂时为"协议主机端口","协议Upstream"，选择主机端口后，需要输入，选择Upstream可选择已有
+         参数列表中root与proxy_pass必须有一个，且只能有一个，如果同时存在，将忽略root,前端需要进行提示
+
+
+6、删除指定server下location
+    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}/{path}
+    方法：delete
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1/aaaaaaar.com/80/xxoo
+    示例：/admin/nginx/1/aaaaaaar.com/80/xxoouser
+    注意：该路径特殊字符需要进行转义
+        "/":"xxoo"
+
+
+7、获取所有upstream
+    地址：/admin/nginx/{nginxId}/upstream
+    方法：get
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    路径参数示例：/admin/nginx/1/upstream
+
+
+8、添加upstream
+    地址：/admin/nginx/{nginxId}/upstream
+    方法：get
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    路径参数示例：/admin/nginx/1/upstream
+    body参数示例：
+        {
+            "name": "upstream",
+            "value": "gitlab",
+            "items": [{
+                "address": "192.168.1.28:443",
+                "weight": 0
+             }]
+    	}
+
+
+9、删除upstream
+    地址：/admin/nginx/{nginxId}/upstream/{upstream}
+    方法：delete
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    路径参数示例：/admin/nginx/1/upstream/gitlab
+
+
+10、添加nginx实例
+    地址：/admin/nginx
+    方法:post
+    body参数说明：
+        nginxName        必填     nginx实例名称
+        nginxHome        必填     nginx实例Home
+        nginxConf        必填     nginx实例配置文件路径
+        nginxIntro       选填     nginx实例简介
+        nginxStatus      必填     nginx状态
+        hostId           必填     nginx宿主主机
+
+    body参数示例：
+        {
+            "nginxName":"个人博客反向代理服务",
+            "nginxHome":"/usr/local/nginx",
+            "nginxConf":"/usr/local/nginx/conf/nginx.conf",
+            "nginxIntro":"这里你可以随便添加一些介绍或备注信息，这句话只是一个测试",
+            "nginxStatus":0,
+            "hostId":80
+        }
+
+11、修改nginx实例
+    地址：/admin/nginx
+    方法:put
+    body参数说明：
+        nginxId          必填     nginx实例标识
+        nginxName        必填     nginx实例名称
+        nginxHome        必填     nginx实例Home
+        nginxConf        必填     nginx实例配置文件路径
+        nginxIntro       选填     nginx实例简介
+        nginxStatus      必填     nginx状态
+        hostId           必填     nginx宿主主机
+
+    body参数示例：
+        {
+            "nginxId":"25",
+            "nginxName":"个人博客反向代理服务",
+            "nginxHome":"/usr/local/nginx",
+            "nginxConf":"/usr/local/nginx/conf/nginx.conf",
+            "nginxIntro":"这里你可以随便添加一些介绍或备注信息，这句话只是一个测试",
+            "nginxStatus":0,
+            "hostId":80
+        }
+
+
+12、删除nginx实例
+    地址：/admin/nginx/{nginxId}
+    方法：delete
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1
+
+
+13、获取nginx实例
+    地址：/admin/nginx/{nginxId}
+    方法：get
+    路径参数说明：
+        {nginxId}为对应nginx标识
+    示例：/admin/nginx/1
+
+
+14、获取nginx实例列表
+    地址：/admin/nginx/list/{pageNumber}/{pageSize}
+    方法：get
+    路径参数说明：
+        {pageNumber}为分页当前页
+        {pageSize}为分页页大小
+    示例：/admin/nginx/list/1/10
+
+
+15、添加linux主机
+    地址：/admin/linux
+    方法:post
+    body参数说明：
+        linuxName        必填     linux名称
+        linuxHost        必填     linux远程连接地址
+        linuxPort        必填     linux端口
+        linuxUser        选填     linux连接用户
+        linuxPwd         必填     linux连接密码
+        linuxIntro       必填     linux简介
+
+    body参数示例：
+        {
+            "linuxName":"公司184",
+            "linuxHost":"192.168.1.184",
+            "linuxPort":22,
+            "linuxUser":"root",
+            "linuxPwd":"yilinkeji888",
+            "linuxIntro":"这里你可以随便添加一些介绍或备注信息，这句话只是一个测试"
+        }
+
+16、修改linux主机信息
+    地址：/admin/linux
+    方法:put
+    body参数说明：
+        linuxId          必填     linux实例标识
+        linuxName        必填     linux名称
+        linuxHost        必填     linux远程连接地址
+        linuxPort        必填     linux端口
+        linuxUser        选填     linux连接用户
+        linuxPwd         必填     linux连接密码
+        linuxIntro       必填     linux简介
+
+    body参数示例：
+        {
+            "linuxId":63,
+            "linuxName":"公司184",
+            "linuxHost":"192.168.1.184",
+            "linuxPort":22,
+            "linuxUser":"root",
+            "linuxPwd":"yilinkeji888",
+            "linuxIntro":"这里你可以随便添加一些介绍或备注信息，这句话只是一个测试"
+        }
+
+
+17、删除linux主机信息
+    地址：/admin/linux/{linuxId}
+    方法：delete
+    路径参数说明：
+        {linuxId}为对应linux标识
+    示例：/admin/linux/1
+
+
+18、获取linux实例
+    地址：/admin/linux/{linuxId}
+    方法：get
+    路径参数说明：
+        {linuxId}为对应linux标识
+    示例：/admin/linux/1
+
+
+19、获取linux列表
+    地址：/admin/linux/list/{pageNumber}/{pageSize}
+    方法：get
+    路径参数说明：
+        {pageNumber}为分页当前页
+        {pageSize}为分页页大小
+    示例：/admin/linux/list/1/10
+
+
+20、实时日志接口
+    地址：/admin/logger/{logId}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+计划：
+    1、实现nginx管理
+    2、实现redis在线管理
+    3、接口管理，在线测试
