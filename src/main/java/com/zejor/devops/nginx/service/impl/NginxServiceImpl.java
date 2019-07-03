@@ -1,6 +1,8 @@
 package com.zejor.devops.nginx.service.impl;
 
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.zejor.devops.nginx.bean.NginxServer;
 import com.zejor.devops.nginx.bean.NginxLocation;
 import com.zejor.devops.nginx.bean.NginxUpstream;
@@ -8,15 +10,15 @@ import com.zejor.devops.nginx.common.NginxConfEditor;
 import com.zejor.devops.nginx.domain.Nginx;
 import com.zejor.devops.nginx.service.NginxService;
 import com.zejor.devops.nginx.spring.plugins.SpringUtils;
+import com.zejor.devops.nginx.utils.SortUtils;
 import com.zejor.devops.nginx.utils.TimeUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class NginxServiceImpl implements NginxService {
@@ -45,7 +47,22 @@ public class NginxServiceImpl implements NginxService {
     @Override
     public List<NginxServer> listNginxServer(int nginxId) {
         NginxConfEditor nginxConfEditor = getNginxConfEditor(nginxId);
-        return nginxConfEditor.listNginxServer();
+        List<NginxServer> nginxServers = nginxConfEditor.listNginxServer();
+        SortUtils.Converter converter = new SortUtils.Converter() {
+
+            @Override
+            public Object convert(Object source) {
+                NginxServer server = (NginxServer) source;
+                String[] names = server.getName().split("\\.");
+                ArrayUtils.reverse(names);
+                String target = Joiner.on(".").join(names);
+                return target + ":" + server.getPort();
+            }
+        };
+        List<SortUtils.Converter> converters = new ArrayList<>();
+        converters.add(converter);
+        SortUtils.sort(nginxServers, true, converters);
+        return nginxServers;
     }
 
     @Override
@@ -66,7 +83,9 @@ public class NginxServiceImpl implements NginxService {
     @Override
     public List<NginxLocation> listLocation(int nginxId, NginxServer nginxServer) {
         NginxConfEditor nginxConfEditor = getNginxConfEditor(nginxId);
-        return nginxConfEditor.listRules(nginxServer);
+        List<NginxLocation> locations = nginxConfEditor.listRules(nginxServer);
+        SortUtils.sort(locations, "path", true);
+        return locations;
     }
 
     @Override

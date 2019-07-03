@@ -19,6 +19,24 @@ public class NginxLocation {
 
     private String proxyPass;
 
+    private String clientMaxBodySize;
+
+    private String clientBodyBufferSize;
+
+    private String proxyConnectTimeout;
+
+    private String proxyReadTimeout;
+
+    private String proxySendTimeout;
+
+    private String proxyBufferSize;
+
+    private String proxyBuffers;
+
+    private String proxyBusyBuffersSize;
+
+    private String proxyTempFileWriteSize;
+
     private String tryFiles;
 
     private String deny;
@@ -28,6 +46,14 @@ public class NginxLocation {
     private String expires;
 
     private String accessLog;
+
+    private String fastcgiPass;
+
+    private String fastcgiIndex;
+
+    private String fastcgiParam;
+
+    private String include;
 
     private List<NginxProxySetHeader> proxySetHeader;
 

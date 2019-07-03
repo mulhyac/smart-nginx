@@ -3,11 +3,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://xx/nginx
-    username: zejor
-    password: 123456
-  application:
-    name: nginx
+    url: jdbc:mysql://183.136.213.178/nginx
+    username: shipz
+    password: shipz622322
 
 nutz:
   dao:

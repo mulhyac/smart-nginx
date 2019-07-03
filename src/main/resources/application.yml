@@ -1,22 +1,8 @@
-server:
-  port: 8888
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://xx/nginx
-    username: zejor
-    password: 123456
   application:
     name: nginx
-
-
-nutz:
-  dao:
-    sqlmanager:
-      paths:
-
-
-page-store: 
-  location: /data/temp/nginx/store
-
-
+  profiles:
+    active: dev
+server:
+  tomcat:
+    uri-encoding: UTF-8

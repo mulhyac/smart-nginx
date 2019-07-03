@@ -3,7 +3,7 @@
 
 
 1、获取指定标识的nginx下所有server节点
-    地址：/admin/nginx/{nginxId}
+    地址：/admin/nginx/{nginxId}/server
     方法：get
     路径参数说明：
         {nginxId}为对应nginx标识
@@ -11,7 +11,7 @@
 
 
 2、向指定nginx服务添加server节点
-    地址：/admin/nginx/{nginxId}
+    地址：/admin/nginx/{nginxId}/server
     方法:post
     路径参数说明：
         {nginxId}为对应nginx标识
@@ -26,7 +26,7 @@
 
 
 3、删除指定标识的nginx下指定server节点
-    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    地址：/admin/nginx/{nginxId}/server/{serverName}/{serverPort}
     方法：delete
     路径参数说明：
         {nginxId}为对应nginx标识
@@ -34,7 +34,7 @@
 
 
 4、获取指定server下location
-    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    地址：/admin/nginx/{nginxId}/server/{serverName}/{serverPort}
     方法：get
     路径参数说明：
         {nginxId}为对应nginx标识
@@ -42,7 +42,7 @@
 
 
 5、添加指定server下location
-    地址：/admin/nginx/{nginxId}/{serverName}/{serverPort}
+    地址：/admin/nginx/{nginxId}/server/{serverName}/{serverPort}
     方法：post
     路径参数说明：
         {nginxId}为对应nginx标识

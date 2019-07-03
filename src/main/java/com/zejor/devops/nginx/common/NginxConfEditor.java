@@ -1,6 +1,7 @@
 package com.zejor.devops.nginx.common;
 
 import com.github.odiszapc.nginxparser.*;
+import com.google.common.base.CaseFormat;
 import com.zejor.devops.nginx.bean.NginxServer;
 import com.zejor.devops.nginx.bean.NginxLocation;
 import com.zejor.devops.nginx.bean.NginxUpstream;
@@ -8,10 +9,13 @@ import com.zejor.devops.nginx.bean.NginxUpstreamItem;
 import com.zejor.devops.nginx.domain.Nginx;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -148,6 +152,7 @@ public class NginxConfEditor {
                     ngxConfig.addEntry(http);
                     dump();
                     return true;
+//                    return Result.success("删除成功！");
                 }
             }
         }
@@ -275,8 +280,8 @@ public class NginxConfEditor {
         List<NgxEntry> servers = ngxConfig.findAll(NgxConfig.BLOCK, "http", "server");
         List<NgxEntry> upstreamNgxEntries = ngxConfig.findAll(NgxConfig.BLOCK, "http", "upstream");
         for (NgxEntry ngxEntry : upstreamNgxEntries) {
-            if(((NgxBlock)ngxEntry).getValue().equals(upstream))
-            http.remove(ngxEntry);
+            if (((NgxBlock) ngxEntry).getValue().equals(upstream))
+                http.remove(ngxEntry);
         }
         ngxConfig.remove(http);
         for (NgxEntry server : servers) {
@@ -371,12 +376,25 @@ public class NginxConfEditor {
         return locations;
     }
 
-    public NgxBlock buildLocation(NginxLocation locationBlock) {
+    public NgxBlock buildLocation(NginxLocation nginxLocation) {
         NgxBlock ngxBlock = new NgxBlock();
-        ngxBlock.addValue("location " + locationBlock.getPath());
-        NgxParam ngxParam = new NgxParam();
-        ngxParam.addValue("root " + locationBlock.getRoot());
-        ngxBlock.addEntry(ngxParam);
+        ngxBlock.addValue("location " + nginxLocation.getPath());
+
+        Class<NginxLocation> clazz = NginxLocation.class;
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for (Field field : declaredFields) {
+            // 获取getXxx()方法名称
+            char[] cs = field.getName().toCharArray();
+            cs[0] -= 32;
+            Method method = ReflectionUtils.findMethod(clazz, "get" + String.valueOf(cs));
+            Object value = ReflectionUtils.invokeMethod(method, nginxLocation);
+            if (value != null) {
+                NgxParam ngxParam = new NgxParam();
+                String entryKey = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
+                ngxParam.addValue(entryKey + " " + value);
+                ngxBlock.addEntry(ngxParam);
+            }
+        }
         return ngxBlock;
     }
 
