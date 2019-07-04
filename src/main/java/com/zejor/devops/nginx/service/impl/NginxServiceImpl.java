@@ -53,7 +53,17 @@ public class NginxServiceImpl implements NginxService {
             @Override
             public Object convert(Object source) {
                 NginxServer server = (NginxServer) source;
-                String[] names = server.getName().split("\\.");
+                String serverName = server.getName();
+                serverName = serverName.replace("com.cn", "comcn");
+                serverName = serverName.replace("net.cn", "netcn");
+                serverName = serverName.replace("org.cn", "orgcn");
+                serverName = serverName.replace("gov.cn", "govcn");
+                serverName = serverName.replace("gz.cn", "gzcn");
+                serverName = serverName.replace("zj.cn", "zjcn");
+                serverName = serverName.replace("ac.cn", "accn");
+                serverName = serverName.replace("he.cn", "hecn");
+                serverName = serverName.replace("gz.cn", "gzcn");
+                String[] names = serverName.split("\\.");
                 ArrayUtils.reverse(names);
                 String target = Joiner.on(".").join(names);
                 return target + ":" + server.getPort();

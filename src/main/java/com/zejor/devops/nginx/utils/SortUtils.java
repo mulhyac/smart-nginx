@@ -1,6 +1,9 @@
 package com.zejor.devops.nginx.utils;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -31,11 +34,7 @@ public class SortUtils<T> {
                     Method method = ReflectionUtils.findMethod(obj1.getClass(), methodStr);
                     String value1 = ReflectionUtils.invokeMethod(method, obj1).toString();
                     String value2 = ReflectionUtils.invokeMethod(method, obj1).toString();
-                    if (sortMode) {
-                        retVal = value1.compareTo(value2);
-                    } else {
-                        retVal = value2.compareTo(value1);
-                    }
+                    retVal = SortUtils.compare(value1, value2, sortMode);
                 } catch (Exception e) {
                     System.out.println("List<" + ((T) obj1).getClass().getName() + ">排序异常！");
                     e.printStackTrace();
@@ -59,11 +58,7 @@ public class SortUtils<T> {
                     }
                     String value1 = v1.toString();
                     String value2 = v2.toString();
-                    if (sortMode) {
-                        retVal = value1.compareTo(value2);
-                    } else {
-                        retVal = value2.compareTo(value1);
-                    }
+                    retVal = SortUtils.compare(value1, value2, sortMode);
                 } catch (Exception e) {
                     System.out.println("List<" + ((T) obj1).getClass().getName() + ">排序异常！");
                     e.printStackTrace();
@@ -71,6 +66,15 @@ public class SortUtils<T> {
                 return retVal;
             }
         });
+    }
+
+
+    private static int compare(String value1, String value2, boolean sortMode) {
+        if (sortMode) {
+            return value1.compareTo(value2);
+        } else {
+            return value2.compareTo(value1);
+        }
     }
 
     private static Object convert(Object source, List<Converter> converters) {
