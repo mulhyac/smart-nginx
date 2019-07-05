@@ -20,6 +20,7 @@ public class StringTest {
         ArrayUtils.reverse(names);
         String target = Joiner.on(".").join(names);
         System.out.println(target);
+        System.out.println("jie360.com.cn".replace("com.cn", "comcn"));
     }
 
 }

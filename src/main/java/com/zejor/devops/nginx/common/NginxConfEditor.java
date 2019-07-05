@@ -184,10 +184,12 @@ public class NginxConfEditor {
         NgxBlock ngxBlock = new NgxBlock();
         ngxBlock.addValue(new NgxToken("server"));
         NgxParam port = new NgxParam();
-        port.addValue("listen " + nginxServer.getPort());
+        port.addValue("listen");
+        port.addValue(String.valueOf(nginxServer.getPort()));
         ngxBlock.addEntry(port);
         NgxParam name = new NgxParam();
-        name.addValue("server_name " + (nginxServer.getName()));
+        name.addValue("server_name");
+        name.addValue(nginxServer.getName());
         ngxBlock.addEntry(name);
         return ngxBlock;
     }
@@ -252,12 +254,14 @@ public class NginxConfEditor {
             return;
         }
         NgxBlock upstreamBlock = new NgxBlock();
-        upstreamBlock.addValue("upstream " + upstream.getValue());
+        upstreamBlock.addValue("upstream");
+        upstreamBlock.addValue(upstream.getValue());
 
         // 负载列表
         for (NginxUpstreamItem item : upstream.getItems()) {
             NgxParam param = new NgxParam();
-            param.addValue("server " + item.getAddress());
+            param.addValue("server");
+            param.addValue(item.getAddress());
             if (item.getWeight() > 0) {
                 param.addValue("weight=" + item.getWeight());
             }
@@ -316,11 +320,11 @@ public class NginxConfEditor {
             NgxBlock block = (NgxBlock) server;
             int listen = findIntParam(block, "listen");
             String serverName = findParam(block, "server_name");
-            Set<String> already = getAlreadyLocation(block);
-            if (already.contains(nginxLocation.getPath())) {
-                return false;
-            }
             if ((serverName.equals(nginxServer.getName())) && listen == nginxServer.getPort()) {
+                Set<String> already = getAlreadyLocation(block);
+                if (already.contains(nginxLocation.getPath())) {
+                    return false;
+                }
                 NgxBlock ngxBlock = buildLocation(nginxLocation);
                 block.addEntry(ngxBlock);
             }
@@ -378,11 +382,15 @@ public class NginxConfEditor {
 
     public NgxBlock buildLocation(NginxLocation nginxLocation) {
         NgxBlock ngxBlock = new NgxBlock();
-        ngxBlock.addValue("location " + nginxLocation.getPath());
+        ngxBlock.addValue("location");
+        ngxBlock.addValue(nginxLocation.getPath());
 
         Class<NginxLocation> clazz = NginxLocation.class;
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
+            if ("path".equals(field.getName())) {
+                continue;
+            }
             // 获取getXxx()方法名称
             char[] cs = field.getName().toCharArray();
             cs[0] -= 32;

@@ -1,13 +1,13 @@
-package com.zejor.devops.nginx;
+package com.zejor.devops;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NginxManagerApplication {
+public class SmartDevopsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NginxManagerApplication.class, args);
+        SpringApplication.run(SmartDevopsApplication.class, args);
     }
 
 }
