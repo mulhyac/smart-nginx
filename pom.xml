@@ -5,7 +5,7 @@
 
     <groupId>com.zejor</groupId>
     <artifactId>smart-nginx</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>smart-nginx</name>
@@ -72,6 +72,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
+        </dependency>
+        <!-- dom4j，用于解析pom。xml，并获取所有springboot启动模块 -->
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.11.1</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
