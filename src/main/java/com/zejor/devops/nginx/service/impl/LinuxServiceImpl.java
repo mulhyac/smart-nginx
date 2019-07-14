@@ -2,7 +2,7 @@ package com.zejor.devops.nginx.service.impl;
 
 import com.zejor.devops.nginx.domain.Linux;
 import com.zejor.devops.nginx.service.LinuxService;
-import com.zejor.devops.nginx.utils.TimeUtils;
+import com.zejor.devops.utils.TimeUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.springframework.beans.factory.annotation.Autowired;

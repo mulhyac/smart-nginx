@@ -25,7 +25,7 @@ public class Linux {
     private String linuxHost;
 
     @Column("linux_port")
-    private int linuxPort;
+    private int linuxPort = 22;
 
     @Column("linux_user")
     private String linuxUser;

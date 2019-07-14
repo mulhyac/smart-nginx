@@ -1,4 +1,4 @@
-package com.zejor.devops.nginx.utils;
+package com.zejor.devops.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -2,7 +2,6 @@ package com.zejor.devops.nginx.service.impl;
 
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.zejor.devops.nginx.bean.NginxServer;
 import com.zejor.devops.nginx.bean.NginxLocation;
 import com.zejor.devops.nginx.bean.NginxUpstream;
@@ -10,8 +9,8 @@ import com.zejor.devops.nginx.common.NginxConfEditor;
 import com.zejor.devops.nginx.domain.Nginx;
 import com.zejor.devops.nginx.service.NginxService;
 import com.zejor.devops.nginx.spring.plugins.SpringUtils;
-import com.zejor.devops.nginx.utils.SortUtils;
-import com.zejor.devops.nginx.utils.TimeUtils;
+import com.zejor.devops.utils.SortUtils;
+import com.zejor.devops.utils.TimeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;

@@ -1,9 +1,6 @@
-package com.zejor.devops.nginx.utils;
+package com.zejor.devops.utils;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
