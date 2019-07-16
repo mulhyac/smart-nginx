@@ -1,4 +1,4 @@
-package com.zejor.devops.springboot;
+package com.zejor.devops.autobuild.springboot;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +16,7 @@ public class BootModule {
     private String bootPom;
 
     private String bootName;
+
+    private String bootVersion;
 
 }

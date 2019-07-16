@@ -1,6 +1,6 @@
 package com.zejor.devops.nginx.logger;
 
-import com.zejor.devops.nginx.domain.Linux;
+import com.zejor.devops.nginx.logger.domain.Log;
 import com.zejor.devops.nginx.spring.plugins.SpringUtils;
 import org.nutz.dao.Dao;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,7 +41,7 @@ public class WebSocketLogger {
     /**
      * 日志终端映射
      */
-    private static Map<Integer, JTermRealTimeLogger> loggers = new HashMap<Integer, JTermRealTimeLogger>();
+    private static Map<Integer, RemoteLogger> loggers = new HashMap<Integer, RemoteLogger>();
 
     /**
      * 日志标识
@@ -70,26 +71,55 @@ public class WebSocketLogger {
             loggerRouters.put(logId, routers);
         }
         routers.add(sessionId);
+        logger(session, logId);
+//        try {
+//            // 执行tail -f命令
+//            Process process = Runtime.getRuntime().exec("tail -f /home/eziep/Desktop/log/smart_shell_1563111577193.log");
+//            InputStream inputStream = process.getInputStream();
+//
+//            // 一定要启动新的线程，防止InputStream阻塞处理WebSocket的线程
+//            LocalLogger thread = new LocalLogger(inputStream, session);
+//            thread.start();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 
-        //根据参数进行数据库查询，获得linux对象和日志路径
-        Linux linux = SpringUtils.getBean(Dao.class).fetch(Linux.class, 3);
-        if (logId == 1) {
-            log = "/root/kanshushenzhan.log";
-        } else {
-            log = "/usr/local/nginx/logs/access.log";
+    public void logger(Session session, int logId) {
+        Dao dao = SpringUtils.getBean("dao");
+        Log log = dao.fetch(Log.class, logId);
+        if (log.getLinuxId() > 0) {
+            dao.fetchLinks(log, "linux");
         }
+        switch (log.getLogType()) {
+            case 1:
+                localLog(session, log);
+                break;
+            case 2:
+                remoteLog(session, log);
+                break;
+            default:
+                break;
+        }
+    }
 
+    /**
+     * 实时查看远程日志
+     *
+     * @param session
+     * @param log
+     */
+    public void remoteLog(Session session, Log log) {
         //如该日志
         if (loggers.containsKey(logId)) {
             return;
         }
-        JTermRealTimeLogger logger = new JTermRealTimeLogger(linux, this, log, logId);
+        RemoteLogger logger = new RemoteLogger(log.getLinux(), this, log.getLogPath(), logId);
         System.out.println("开始启动SSH通道！");
         loggers.put(logId, logger);
         new Thread(new Runnable() {
             @Override
             public void run() {
-//
                 try {
                     logger.start();
                 } catch (Exception e) {
@@ -97,6 +127,23 @@ public class WebSocketLogger {
                 }
             }
         }).start();
+    }
+
+    public void localLog(Session session, Log log) {
+        try {
+            // 执行tail -f命令
+            Thread.sleep(1000);
+            Process process = Runtime.getRuntime().exec("tail -100f " + log.getLogPath());
+            InputStream inputStream = process.getInputStream();
+            System.out.println("开始实时刷新本地日志[" + log.getLogPath() + "].");
+            // 一定要启动新的线程，防止InputStream阻塞处理WebSocket的线程
+            LocalLogger thread = new LocalLogger(inputStream, session);
+            thread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnError
@@ -113,8 +160,6 @@ public class WebSocketLogger {
         if (sessionId == null) {
             return;
         }
-        sessions.remove(sessionId);
-        loggerRouters.get(logId).remove(sessionId);
         if (loggerRouters.get(logId).size() > 0) {
             return;
         }
@@ -123,8 +168,10 @@ public class WebSocketLogger {
             System.out.println("停止了一个SSH通道！");
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             loggers.remove(logId);
+            sessions.remove(sessionId);
+            loggerRouters.get(logId).remove(sessionId);
         }
 
     }

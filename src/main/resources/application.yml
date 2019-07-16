@@ -2,7 +2,7 @@ spring:
   application:
     name: nginx
   profiles:
-    active: prod
+    active: dev
 server:
   tomcat:
     uri-encoding: UTF-8

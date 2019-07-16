@@ -1,4 +1,4 @@
-package com.zejor.devops.springboot;
+package com.zejor.devops.autobuild.springboot;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.mapper.MapperWrapper;

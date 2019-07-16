@@ -1,5 +1,6 @@
 package com.zejor.devops.utils;
 
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -16,5 +17,32 @@ public class SecureShell {
         session.connect();
         return session;
     }
+
+    /**
+     * 关闭连接 server
+     */
+    public void logout(Session session) {
+        if (session != null) {
+            if (session.isConnected()) {
+                session.disconnect();
+            }
+        }
+    }
+//    /**
+//     * 关闭连接 server
+//     */
+//    public void logout(ChannelSftp sftp, Session session) {
+//        if (sftp != null) {
+//            if (sftp.isConnected()) {
+//                sftp.disconnect();
+//                System.out.println("sftp is closed already");
+//            }
+//        }
+//        if (session != null) {
+//            if (session.isConnected()) {
+//                session.disconnect();
+//            }
+//        }
+//    }
 
 }

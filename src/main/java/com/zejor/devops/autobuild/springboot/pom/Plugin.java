@@ -1,4 +1,4 @@
-package com.zejor.devops.springboot.pom;
+package com.zejor.devops.autobuild.springboot.pom;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;

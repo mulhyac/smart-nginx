@@ -1,16 +1,16 @@
-package com.zejor.devops.springboot.pom;
+package com.zejor.devops.autobuild.springboot.pom;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @XStreamAlias("project")
-public class Project {
+public class Project implements Serializable {
 
     private String groupId;
 
@@ -25,7 +25,5 @@ public class Project {
     private List<Dependency> dependencies;
 
     private Build build;
-
-
 
 }

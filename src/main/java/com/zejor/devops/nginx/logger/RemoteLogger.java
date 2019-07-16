@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class JTermRealTimeLogger {
+public class RemoteLogger {
 
     private Linux linux;
 
@@ -39,7 +39,7 @@ public class JTermRealTimeLogger {
     @Accessors
     InputStream inputStream;
 
-    public JTermRealTimeLogger(Linux linux, WebSocketLogger logger, String log, int logId) {
+    public RemoteLogger(Linux linux, WebSocketLogger logger, String log, int logId) {
         this.linux = linux;
         this.logger = logger;
         this.log = log;

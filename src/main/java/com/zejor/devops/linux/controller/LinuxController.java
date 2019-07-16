@@ -1,4 +1,4 @@
-package com.zejor.devops.nginx.controller;
+package com.zejor.devops.linux.controller;
 
 import com.zejor.devops.nginx.domain.Linux;
 import com.zejor.devops.nginx.service.LinuxService;

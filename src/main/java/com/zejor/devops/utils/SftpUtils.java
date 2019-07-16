@@ -198,27 +198,10 @@ public class SftpUtils extends SecureShell{
         return nFileNameList;
     }
 
-    /**
-     * 关闭连接 server
-     */
-    public void logout(ChannelSftp sftp, Session session) {
-        if (sftp != null) {
-            if (sftp.isConnected()) {
-                sftp.disconnect();
-                System.out.println("sftp is closed already");
-            }
-        }
-        if (session != null) {
-            if (session.isConnected()) {
-                session.disconnect();
-            }
-        }
-    }
-
     public boolean mkdirs(ChannelSftp sftp, String dir) {
         SftpATTRS attrs = null;
         String[] dirs = dir.split("/");
-        System.out.println(Json.toJson(dirs));
+//        System.out.println(Json.toJson(dirs));
         String absolute = "";
         for (String temp : dirs) {
             absolute += "/" + temp;
