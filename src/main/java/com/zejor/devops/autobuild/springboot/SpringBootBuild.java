@@ -93,8 +93,12 @@ public class SpringBootBuild implements AutoBuild {
             List<BootModule> bootModules = getBootModule(getSession(linux), workspace + "/" + cloneName + "/pom.xml", null);
             StringBuilder sb = new StringBuilder("#!/bin/bash");
             for (BootModule bootModule : bootModules) {
+                sb.append("\nrm -rf ${runtime}/" + bootModule.getBootTarget());
                 sb.append("\ncp " + bootModule.getBootTarget() + " ${runtime}");
-                sb.append("\n" + buildInfo.getStopShell() + "\necho '服务已杀死！'");
+                sb.append("\npids=`ps -ef |grep ${moduleName}-${version}.jar |grep -v grep|awk '{print $2}'`");
+                sb.append("\nif [ -n $pids ]; then  ");
+                sb.append("\n\t" + buildInfo.getStopShell() + "\n\techo '服务已杀死！'");
+                sb.append("\nelse\n\techo \"未发现该程序运行进程，请检查在此之前该服务是否启动或停止！\"\nfi");
                 sb.append("\n" + buildInfo.getStartShell() + "\necho '服务已启动！'");
                 map.put("moduleName", bootModule.getBootName());
                 map.put("version", bootModule.getBootVersion());

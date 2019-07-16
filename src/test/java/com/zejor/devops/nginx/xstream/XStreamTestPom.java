@@ -1,14 +1,12 @@
 package com.zejor.devops.nginx.xstream;
 
 import com.thoughtworks.xstream.XStream;
-import com.zejor.devops.springboot.ETLXstream;
-import com.zejor.devops.springboot.pom.Build;
-import com.zejor.devops.springboot.pom.Dependency;
-import com.zejor.devops.springboot.pom.Plugin;
-import com.zejor.devops.springboot.pom.Project;
+import com.zejor.devops.autobuild.springboot.ETLXstream;
+import com.zejor.devops.autobuild.springboot.pom.Build;
+import com.zejor.devops.autobuild.springboot.pom.Dependency;
+import com.zejor.devops.autobuild.springboot.pom.Plugin;
+import com.zejor.devops.autobuild.springboot.pom.Project;
 import org.nutz.json.Json;
-
-import java.util.List;
 
 public class XStreamTestPom {
 
@@ -28,7 +26,7 @@ public class XStreamTestPom {
                 "    </parent>\n" +
                 "    <properties>\n" +
                 "        <java.version>1.8</java.version>\n" +
-                "        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n" +
+                "        <project.autobuild.sourceEncoding>UTF-8</project.autobuild.sourceEncoding>\n" +
                 "        <docker.image.prefix>qzbk</docker.image.prefix>\n" +
                 "        <qzbk.version>1.0.0</qzbk.version>\n" +
                 "        <!--  <spring.version>4.3.8.RELEASE</spring.version>  -->\n" +
@@ -109,7 +107,7 @@ public class XStreamTestPom {
                 "\n" +
                 "        </dependencies>\n" +
                 "    </dependencyManagement>\n" +
-                "        <build>\n" +
+                "        <autobuild>\n" +
                 "            <plugins>\n" +
                 "\n" +
                 "            <plugin>\n" +
@@ -122,23 +120,24 @@ public class XStreamTestPom {
                 "                        <resources>\n" +
                 "                            <resource>\n" +
                 "                                <targetPath>/</targetPath>\n" +
-                "                                <directory>${project.build.directory}</directory>\n" +
-                "                                <include>${project.build.finalName}.jar</include>\n" +
+                "                                <directory>${project.autobuild.directory}</directory>\n" +
+                "                                <include>${project.autobuild.finalName}.jar</include>\n" +
                 "                            </resource>\n" +
                 "                        </resources>\n" +
                 "                    </configuration>\n" +
                 "                </plugin>\n" +
                 "        </plugins>\n" +
                 "        <defaultGoal>compile</defaultGoal>\n" +
-                "    </build>\n" +
+                "    </autobuild>\n" +
                 "\n" +
                 "</project>";
         XStream xStream = new ETLXstream();
         xStream.autodetectAnnotations(true);
         xStream.alias("dependency", Dependency.class);
         xStream.alias("project", Project.class);
-        xStream.alias("build", Build.class);
-//        xStream.alias("plugin", String.class);
+        xStream.alias("autobuild", Build.class);
+        xStream.alias("plugin", String.class);
+        xStream.alias("module", String.class);
         Project project = (Project) xStream.fromXML(xml);
         System.out.println(Json.toJson(project));
     }

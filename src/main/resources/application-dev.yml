@@ -4,8 +4,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://183.136.213.178/nginx
-    username: shipz
-    password: shipz622322
+    username: eziep
+    password: xxxxxxxx
+    type: com.alibaba.druid.pool.DruidDataSource
 
 nutz:
   dao:
